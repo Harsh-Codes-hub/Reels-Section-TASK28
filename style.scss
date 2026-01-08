@@ -1,10 +1,160 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+:root {
+  --bg-dark: oklch(0.1 0 20);
+  --bg: oklch(0.15 0 20);
+  --bg-light: oklch(0.2 0 20);
+  --text: oklch(0.96 0 20);
+  --text-muted: oklch(0.76 0 20);
+  --highlight: oklch(0.5 0 20);
+  --border: oklch(0.4 0 20);
+  --border-muted: oklch(0.3 0 20);
+
+  font-size: clamp(14px, 1.1vw, 18px);
 }
 
-html, body {
-    height: 100%;
-    width: 100%;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+button {
+  all: unset;
+  width: fit-content;
+  cursor: pointer;
+  & i {
+    pointer-events: none;
+  }
+}
+
+body {
+  background: var(--bg-dark);
+  color: var(--text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+main {
+  height: 100%;
+  width: 100%;
+}
+
+.reelContainer {
+  height: 100vh;
+  max-width: 420px;
+  width: 100%;
+  margin-inline: auto;
+  scrollbar-width: none;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  background-color: var(--bg-dark);
+  position: relative;
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(
+      to top,
+      oklch(0.1 0 20 / 0.7),
+      transparent 40%
+    );
+    pointer-events: none;
+  }
+}
+
+.reel {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  scroll-snap-align: start;
+  background-color: var(--bg);
+}
+
+.mediaContainer,
+.mediaContainer video {
+  height: 100%;
+  width: 100%;
+}
+
+.mediaContainer video {
+  object-fit: cover;
+}
+
+.profileContainer {
+  position: absolute;
+  bottom: 1.8rem;
+  left: 16px;
+  z-index: 10;
+  width: 80%;
+}
+
+.userInfo {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+}
+
+.profilePicture {
+  height: 36px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background-color: var(--bg-light);
+}
+
+.profileName {
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.followBtn {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--text);
+  border-radius: 4px;
+  padding: 4px 8px;
+}
+
+.caption {
+  margin-top: 8px;
+  font-size: 1rem;
+  opacity: 0.9;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.sideControls {
+  position: absolute;
+  right: 12px;
+  bottom: 40px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.buttonGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  & button {
+    background-color: transparent;
+    border: none;
+    font-size: 1.8rem;
+  }
+}
+
+.sideProfilePic {
+  height: 36px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  margin-top: 8px;
 }
