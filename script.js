@@ -72,24 +72,24 @@ const reelsData = [
 ];
 
 const reelContainerEl = document.querySelector(".reelContainer");
-const STORAGE_KEY = "reels_state_v1"
+const STORAGE_KEY = "reels_state_v1";
 
 function loadReelState() {
   const stored = JSON.parse(localStorage.getItem(STORAGE_KEY));
-  if(!stored) return;
+  if (!stored) return;
 
-  reelsData.forEach(function(reel, idx) {
-    if(stored[idx]) {
+  reelsData.forEach(function (reel, idx) {
+    if (stored[idx]) {
       reelsData[idx] = {
         ...reel,
-        ...stored[idx]
-      }
+        ...stored[idx],
+      };
     }
-  })
+  });
 }
 
 function saveReelState() {
-  const state = reelsData.map(({isLiked, isSaved, isReposted }) => ({
+  const state = reelsData.map(({ isLiked, isSaved, isReposted }) => ({
     isLiked,
     isSaved,
     isReposted,
@@ -103,11 +103,15 @@ function renderReels() {
     clutter += `
         <div class="reel" data-index="${idx}">
           <div class="mediaContainer">
-            <video src="${reel.reelSrc}" autoplay muted loop playsinline></video>
+            <video src="${
+              reel.reelSrc
+            }" muted loop playsinline></video>
           </div>
           <div class="profileContainer">
             <div class="userInfo">
-                <img src="${reel.profilePicSrc}" alt="user" class="profilePicture" />
+                <img src="${
+                  reel.profilePicSrc
+                }" alt="user" class="profilePicture" />
                 <span class="profileName">${reel.username}</span>
                 <button type="button" class="followBtn">Follow</button>
             </div>
@@ -118,19 +122,19 @@ function renderReels() {
           <div class="sideControls">
             <div class="buttonGroup">
               <button type="button" class="like" aria-label="like reel">
-                <i class="ri-heart-${reel.isLiked ? "fill": "line"}"></i>
+                <i class="ri-heart-${reel.isLiked ? "fill" : "line"}"></i>
               </button>
               <button type="button" class="comment" aria-label="comment reel">
                 <i class="ri-chat-1-line"></i>
               </button>
               <button type="button" class="repost" aria-label="repost reel">
-                <i class="ri-repeat-${reel.isLiked ? "fill": "line"}""></i>
+                <i class="ri-repeat-${reel.isLiked ? "fill" : "line"}""></i>
               </button>
               <button type="button" class="share" aria-label="share reel">
                 <i class="ri-send-ins-line"></i>
               </button>
               <button type="button" class="save" aria-label="save reel">
-                <i class="ri-bookmark-${reel.isLiked ? "fill": "line"}""></i>
+                <i class="ri-bookmark-${reel.isLiked ? "fill" : "line"}""></i>
               </button>
               <button type="button" class="more" aria-label="more">
                 <i class="ri-more-2-line"></i>
@@ -146,22 +150,60 @@ function renderReels() {
 loadReelState();
 renderReels();
 
-reelContainerEl.addEventListener("click", function (elem) {
-  const reelEl = elem.target.closest(".reel");
+reelContainerEl.addEventListener("click", function (e) {
+  const reelEl = e.target.closest(".reel");
   if (!reelEl) return;
 
   const index = Number(reelEl.dataset.index);
   const reel = reelsData[index];
 
-  if (elem.target.closest(".like")) {
+  // LIKE
+  if (e.target.closest(".like")) {
     reel.isLiked = !reel.isLiked;
+    const icon = reelEl.querySelector(".like i");
+    icon.className = reel.isLiked ? "ri-heart-fill" : "ri-heart-line";
   }
-  if (elem.target.closest(".save")) {
+
+  // SAVE
+  if (e.target.closest(".save")) {
     reel.isSaved = !reel.isSaved;
+    const icon = reelEl.querySelector(".save i");
+    icon.className = reel.isSaved ? "ri-bookmark-fill" : "ri-bookmark-line";
   }
-  if (elem.target.closest(".repost")) {
+
+  // REPOST
+  if (e.target.closest(".repost")) {
     reel.isReposted = !reel.isReposted;
+    const icon = reelEl.querySelector(".repost i");
+    icon.className = reel.isReposted ? "ri-repeat-fill" : "ri-repeat-line";
   }
 
   saveReelState();
-})
+});
+
+const videos = document.querySelectorAll("video");
+
+const observer = new IntersectionObserver(
+  (entries) => {
+    entries.forEach((entry) => {
+      const video = entry.target;
+      const reelEl = video.closest(".reel");
+
+      if (entry.isIntersecting) {
+        video.play();
+
+        // get reel index
+        const index = reelEl.dataset.index;
+        const reel = reelsData[index];
+
+        // set document title
+        document.title = `${reel.title} • Reels`;
+      } else {
+        video.pause();
+      }
+    });
+  },
+  { threshold: 0.7 }
+);
+
+videos.forEach((video) => observer.observe(video));

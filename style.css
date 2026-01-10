@@ -54,13 +54,6 @@ main {
   background-color: var(--bg-dark);
   position: relative;
 }
-.reelContainer::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: linear-gradient(to top, oklch(10% 0 20deg / 0.7), transparent 40%);
-  pointer-events: none;
-}
 
 .reel {
   position: relative;
@@ -68,6 +61,20 @@ main {
   width: 100%;
   scroll-snap-align: start;
   background-color: var(--bg);
+}
+.reel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent 40%);
+  pointer-events: none;
+}
+
+.reel,
+.mediaContainer,
+video {
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .mediaContainer,

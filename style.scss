@@ -54,17 +54,6 @@ main {
   scroll-snap-type: y mandatory;
   background-color: var(--bg-dark);
   position: relative;
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background-image: linear-gradient(
-      to top,
-      oklch(0.1 0 20 / 0.7),
-      transparent 40%
-    );
-    pointer-events: none;
-  }
 }
 
 .reel {
@@ -73,6 +62,20 @@ main {
   width: 100%;
   scroll-snap-align: start;
   background-color: var(--bg);
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent 40%);
+    pointer-events: none;
+  }
+}
+
+.reel,
+.mediaContainer,
+video {
+  will-change: transform;
+  transform: translateZ(0);
 }
 
 .mediaContainer,
@@ -151,4 +154,3 @@ main {
     font-size: 1.8rem;
   }
 }
-
