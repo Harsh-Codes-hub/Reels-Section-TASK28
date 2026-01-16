@@ -128,6 +128,7 @@ video {
   font-size: 1rem;
   opacity: 0.9;
   display: -webkit-box;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
@@ -142,15 +143,18 @@ video {
   align-items: center;
   justify-content: center;
   flex-direction: column;
-}
-
-.buttonGroup {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  & button {
+  gap: 1rem;
+  button  i {
     background-color: transparent;
     border: none;
-    font-size: 1.8rem;
+    font-size: 1.8rem !important;
   }
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    font-size: .8rem;
+    text-align: center;
+    font-weight: 500;
 }
